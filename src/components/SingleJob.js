@@ -1,48 +1,31 @@
-import React, { Component } from "react";
+import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import Moment from 'react-moment';
-import { connect } from "react-redux";
-import StarBorderIcon from '@material-ui/icons/StarBorder';
+import "./styles.css"
 
-class SingleJob extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      job: {},
-      favourites: []
-    }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.jobSelected !== this.props.jobSelected) {
-      this.setState({
-        job: this.props.job.find(j => j.id === this.props.jobSelected)
-      })
-    }
-    console.log(prevProps.jobSelected,"Component updated")
-  } 
-  render() {
-    console.log(this.state.favourites,"FAVSSS")
-    console.log(this.state.job, "single job");
-    const { job } = this.state;
-    return (
-      <div sticky="top">
-        <Row >
+export default function SingleJob(props) {
+  const job = props.job.find((job) => job.id === props.selectedJob )
+
+  return job ? (
+    <div >
+        <Row>
+          <Card className="single-job-card" style={{width: "50rem"}}>
+              <Card.Header>
+                <Card.Text>
+                <Row>
           <Col lg={8}>
             <h1>{job.company}</h1>
-            <a target="_blank" rel="noopener noreferrer" href={job.company_url}>{job.company_url}</a>
+            <a target="_blank" rel="noopener noreferrer" href={props.job.company_url}>{props.job.company_url}</a>
           </Col>
           <Col lg={4}>
             <img src={job.company_logo} style={{ width: "100%" }} />
           </Col>
         </Row>
-        <Row>
-          <Card style={{ width: "50rem" ,marginTop:"34px"}}>
-              <Card.Header>
+                </Card.Text>
               <Card.Text className="text-muted ml-auto">
-              Posted at: <Moment format="Do MMMM YYYY">{job.created_at}</Moment> | {job.type}
+              Posted at: <Moment format="Do MMMM YYYY">{job.created_at}</Moment> 
               </Card.Text>
               <Card.Text className="text-muted mr-auto">
-              <StarBorderIcon onClick={() => this.props.addToFavourites(this.state.job)} /> Save this job
               </Card.Text>
               </Card.Header>
             <Card.Body>
@@ -60,19 +43,5 @@ class SingleJob extends Component {
           </Card>
         </Row>
       </div>
-    );
-  }
+  ) : null
 }
-const mapStateToProps = (state) => state;
-
-const mapDispatchToProps = (dispatch) => ({
-  addToFavourites: (job) => 
-  dispatch({
-    type:"ADD_TO_FAVOURITES",
-    playload:job,
-  })
-  
-});
-console.log(mapDispatchToProps.addToFavourites,"ADDED TO FAVVV")
-console.log(mapStateToProps,"STATEEEE",mapDispatchToProps)
-export default connect(mapStateToProps,mapDispatchToProps)(SingleJob)

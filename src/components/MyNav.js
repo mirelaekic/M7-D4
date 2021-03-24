@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Navbar,
@@ -9,66 +9,51 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import "./styles.css";
 import JobPost from "./JobPost";
-import Home from "./Home"
+import Home from "./Home";
 import SingleJob from "./SingleJob";
-import {Link,withRouter} from "react-router-dom"
-import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { fetchJobs } from "../store/actions/jobs";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import CloseIcon from "@material-ui/icons/Close";
+import { Collapse, IconButton } from "@material-ui/core";
 
-const mapStateToProps = (state) => state;
+function MyNav() {
+  const [location, setLocation] = useState("");
+  const [position, setPosition] = useState("");
+  const [selectJob, setSelectJob] = useState(null);
+  const [open, setOpen] = React.useState(true);
+  const dispatch = useDispatch();
 
-class MyNav extends Component {
-  state = {
-    newSearch: { position: "", location: "" },
-    jobs: [],
-    jobSelected: {},
+  const jobs = useSelector((state) => state.jobs.jobs);
+  const error = useSelector((state) => state.jobs.error);
+  const selectedJob = (id) => setSelectJob(id);
+
+  const getJobs = (event, loc, pos) => {
+    event.preventDefault();
+    dispatch(fetchJobs(loc, pos));
   };
-  
-  changeHandler = (e) => {
-    this.setState({
-      newSearch: {
-        ...this.state.newSearch,
-        [e.target.id]: e.target.value,
-      },
-    });
-  };
-  fetchJobs = async () => {
-    try {
-      let proxy = "https://miksflame-observablehq.herokuapp.com/";
-      let position = this.state.newSearch.position;
-      let location = this.state.newSearch.location;
-      let response = await fetch(
-        `/positions.json?description=${position}&location=${location}`,
-        {
-          method: "GET",
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        this.setState({ jobs: data });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  changeJob = (id) => this.setState({ jobSelected: id });
-  render() {
-    console.log(this.state.jobs, "FOUND JOBS");
-    return (
-      <div>
-        <Navbar sticky="top" bg="dark" variant="dark">
-          <Container>
-            <Link to="/"><Navbar.Brand>
+
+  return (
+    <div>
+      <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Container>
+          <Link to="/">
+            <Navbar.Brand>
               <strong>GitHub</strong>Jobs
-            </Navbar.Brand></Link>
-            
+            </Navbar.Brand>
+          </Link>
+          <Navbar.Collapse id="basic-navbar-nav">
             <Form inline>
               <FormControl
                 type="text"
                 placeholder="Position"
                 className="mr-sm-2"
-                value={this.state.position}
-                onChange={(e) => this.changeHandler(e)}
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
                 id={"position"}
               />
               <FormControl
@@ -76,37 +61,73 @@ class MyNav extends Component {
                 id={"location"}
                 placeholder="Location"
                 className="mr-sm-2"
-                value={this.state.location}
-                onChange={(e) => this.changeHandler(e)}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
-              <Button variant="outline-primary" onClick={this.fetchJobs}>
+              <Button
+                variant="outline-primary"
+                onClick={(e) => getJobs(e, position, location)}
+              >
                 Search
               </Button>
             </Form>
             <Nav className="ml-auto">
-              <Nav.Link>All jobs</Nav.Link>
-              <Nav.Link href="#features">Post a job</Nav.Link>
+              <Nav.Link disabled="true">All jobs</Nav.Link>
+              <Nav.Link disabled="true">Post a job</Nav.Link>
             </Nav>
-          </Container>
-        </Navbar>
-        <Container className="mt-3">
-          <Row >
-          <Col lg={4}>
-         {this.state.jobs < 0 ? <JobPost 
-            key={this.state.jobs.id}
-            job={this.state.jobs}
-            changeJob={this.changeJob}
-            jobSelected={this.state.jobSelected}
-          /> : <h2>loading..</h2>}
-          </Col>
-          <Col lg={8}>
-            {this.state.jobs < 0 ? <SingleJob
-          job={this.state.jobs}
-          jobSelected={this.state.jobSelected} /> : <h1>please look up</h1>}</Col>
-        </Row>
+          </Navbar.Collapse>
         </Container>
-      </div>
-    );
-  }
+      </Navbar>
+      {error === null ? (
+        ""
+      ) : (
+        <Collapse in={open}>
+          <Alert
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            className="error-alert"
+            severity="error"
+          >
+            <AlertTitle>Error</AlertTitle>
+            {error}
+          </Alert>
+        </Collapse>
+      )}
+      <Container className="mt-3">
+        <Row>
+          {jobs.length > 0 ? (
+            <Col lg={4} md={4} sm={4}>
+              <JobPost
+                key={jobs.id}
+                job={jobs}
+                selectedJob={selectJob}
+                jobSelected={selectedJob}
+              />
+            </Col>
+          ) : (
+            <Home />
+          )}
+          {selectJob === null ? (
+            ""
+          ) : (
+            <Col lg={8} md={8} sm={8}>
+              <SingleJob job={jobs} selectedJob={selectJob} />
+            </Col>
+          )}
+        </Row>
+      </Container>
+    </div>
+  );
 }
-export default connect (mapStateToProps)(withRouter(MyNav))
+
+export default withRouter(MyNav);

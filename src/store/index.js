@@ -1,17 +1,15 @@
-import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
-import favouritesReducer from '../reducers/favourites'
-import jobsReducer from '../reducers/jobsReducer'
-import thunk from 'redux-thunk'
+import {createStore, applyMiddleware,compose, combineReducers} from "redux"
+import thunk from "redux-thunk"
+import { composeWithDevTools } from "redux-devtools-extension"
+import jobsReducer from "./reducers/jobsReducer"
 
-const composedEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const RootReducer = combineReducers({
+    jobs: jobsReducer
+})
 
-const initialState = {
-    favourites:[],
-    jobSearchResults:[],
-}
-
-const bigReducer = combineReducers({ favourites: favouritesReducer, jobSearchResults: jobsReducer })
-
-export default function configStore() {
-    return createStore(bigReducer, initialState, composedEnhancer(applyMiddleware(thunk)))
-  }
+const store = createStore(
+    RootReducer,
+    composeWithDevTools(applyMiddleware(thunk))
+  );
+  
+export default store;

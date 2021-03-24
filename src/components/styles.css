@@ -1,0 +1,66 @@
+.jobs-list{
+    position: relative;
+    max-height: 150vh;
+    overflow: scroll;
+}
+.jobs-list::-webkit-scrollbar{
+    width: 10px !important  ;
+}
+.single-job-card{
+    margin-bottom: 2rem !important;
+    box-shadow: 3px -1px 5px -3px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%) !important;
+}
+.single-job-card .card-header{
+    background-color: white;
+}
+.job-card{
+    box-shadow: 3px -1px 5px -3px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%) !important;
+    background-color: rgb(161 179 130 / 13%);
+    border: 1px solid white !important;
+    border-radius: 0% !important;
+}
+.job-card:hover{
+    border: 2px rgb(195, 231, 207) solid !important;
+}
+.card-link{
+    color: black !important;
+    font-weight: bold;
+}
+.card-link:hover{
+    cursor: pointer;
+}
+.btn-outline-primary {
+    color: white !important;
+    background-color: #f5f5f524 !important;
+    border-radius: 0px !important;
+    border: none !important;
+}
+.btn-outline-primary:hover{
+    border-color: white !important;
+}
+.btn-outline-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-outline-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgb(109 139 171 / 44%) !important;
+}
+.btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgb(42 72 105 / 50%) !important;
+}
+body{
+    font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+.home-title{
+    margin-top: 6rem;
+    margin-bottom: 7rem;
+    text-align: center !important;
+    line-height: 2.7rem;
+}
+.error-alert{
+    width: 22rem !important;
+    box-shadow: 3px -1px 5px -3px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%) !important;
+    position: absolute !important;
+    top: 7%;
+    left: 20%;
+
+}

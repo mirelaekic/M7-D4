@@ -1,17 +1,61 @@
-import React, { Component } from 'react'
-import { Container, Row, Col } from "react-bootstrap";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Chip from "@material-ui/core/Chip";
+import SearchIcon from "@material-ui/icons/Search";
+import { Container, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { fetchJobs } from "../store/actions/jobs";
 
-export default class Home extends Component {
-    render() {
-        return (
-            <Container>
-                <h1 style={{position:"fixed",left:"30rem",top:"13rem", fontSize:"3.5rem"}}>Come help us make</h1>
-                <h1 style={{position:"fixed",left:"26rem",top:"17rem", fontSize:"3.5rem"}}>collaboration even better</h1>
-                <p style={{position:"fixed",left:"22rem",top:"23rem", fontSize:"1.5rem"}}>At GitHub we build the tools that make collaborating and writing software</p>
-                <p style={{position:"fixed",left:"21rem",top:"25rem", fontSize:"1.5rem"}}>easier for everyone. We’ve built a company we truly love working for, and we</p>
-                <p style={{position:"fixed",left:"39rem",top:"27rem", fontSize:"1.5rem"}}>think you will too.</p>
-                <a style={{position:"fixed",left:"36rem",top:"32rem", fontSize:"1.2rem"}} href="#">Open positions</a> <a style={{position:"fixed",left:"47rem",top:"32rem", fontSize:"1.2rem"}} href="#">Internships</a>
-            </Container>
-        )
-    }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "30rem",
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+}));
+
+export default function OutlinedChips() {
+  const classes = useStyles();
+    const dispatch = useDispatch()
+
+  const arrayOfHashTags = [
+    "Developer",
+    "Full Stack Developer",
+    "Junior developer",
+    "Senior",
+    "JavaScript",
+    "Redux",
+    "Python",
+    "Java",
+  ];
+
+  return (
+    <Container>
+      <Row>
+          <h4 className="home-title">Come help us make collaboration even <strong>better</strong>.<br /> At <strong>GitHub</strong> we build the tools
+        that make collaborating and writing software easier for <strong>everyone</strong>. We’ve
+        built a company we truly <strong>love</strong> working for, and we think you will too.</h4>
+        <h4>
+          <strong> Popular searches:</strong>
+        </h4>
+        <div className={classes.root}>
+          {arrayOfHashTags.map((hash, i) => (
+            <Chip
+              key={i}
+              icon={<SearchIcon />}
+              label={hash}
+              clickable
+              onClick={() => dispatch(fetchJobs(hash,""))}
+              color="primary"
+              variant="outlined"
+            />
+          ))}
+        </div>
+      </Row>
+    </Container>
+  );
 }
