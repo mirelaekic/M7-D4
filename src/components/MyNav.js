@@ -45,7 +45,6 @@ class MyNav extends Component {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         this.setState({ jobs: data });
       }
     } catch (error) {
@@ -85,27 +84,25 @@ class MyNav extends Component {
               </Button>
             </Form>
             <Nav className="ml-auto">
-
               <Nav.Link>All jobs</Nav.Link>
               <Nav.Link href="#features">Post a job</Nav.Link>
-              <button onClick={() => this.props.history.push("/favourites")}>Favourites</button>
             </Nav>
           </Container>
         </Navbar>
         <Container className="mt-3">
           <Row >
           <Col lg={4}>
-          <JobPost 
+         {this.state.jobs < 0 ? <JobPost 
             key={this.state.jobs.id}
             job={this.state.jobs}
             changeJob={this.changeJob}
             jobSelected={this.state.jobSelected}
-          />
+          /> : <h2>loading..</h2>}
           </Col>
           <Col lg={8}>
-            <SingleJob
+            {this.state.jobs < 0 ? <SingleJob
           job={this.state.jobs}
-          jobSelected={this.state.jobSelected} /></Col>)
+          jobSelected={this.state.jobSelected} /> : <h1>please look up</h1>}</Col>
         </Row>
         </Container>
       </div>
