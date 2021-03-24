@@ -18,7 +18,7 @@ export default function SingleJob(props) {
             <a target="_blank" rel="noopener noreferrer" href={props.job.company_url}>{props.job.company_url}</a>
           </Col>
           <Col lg={4}>
-            <img src={job.company_logo} style={{ width: "100%" }} />
+            <img src={job.company_logo} alt="company logo" style={{ width: "100%" }} />
           </Col>
         </Row>
                 </Card.Text>
