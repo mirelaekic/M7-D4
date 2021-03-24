@@ -7,7 +7,8 @@ export const fetchJobs = (position, location) => {
       });
     try {
       let response = await fetch(
-        `https://jobs.github.com/positions.json?description=${position}&location=${location}`
+        `https://cors-anywhere.herokuapp.com/https://jobs.github.com/positions.json?description=${position}&location=${location}`,
+        {mode: 'cors'}
       );
       if (response.ok) {
         const jobs = await response.json();

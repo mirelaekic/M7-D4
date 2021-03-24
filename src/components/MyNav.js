@@ -18,7 +18,7 @@ import { fetchJobs } from "../store/actions/jobs";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
-import { Collapse, IconButton } from "@material-ui/core";
+import { CircularProgress, Collapse, IconButton } from "@material-ui/core";
 
 function MyNav() {
   const [location, setLocation] = useState("");
@@ -29,6 +29,7 @@ function MyNav() {
 
   const jobs = useSelector((state) => state.jobs.jobs);
   const error = useSelector((state) => state.jobs.error);
+  const loading = useSelector((state) => state.jobs.loading);
   const selectedJob = (id) => setSelectJob(id);
 
   const getJobs = (event, loc, pos) => {
@@ -106,6 +107,8 @@ function MyNav() {
       <Container className="mt-3">
         <Row>
           {jobs.length > 0 ? (
+            <>
+            {loading ? <CircularProgress /> :
             <Col lg={4} md={4} sm={4}>
               <JobPost
                 key={jobs.id}
@@ -114,6 +117,8 @@ function MyNav() {
                 jobSelected={selectedJob}
               />
             </Col>
+            }
+            </>
           ) : (
             <Home />
           )}
