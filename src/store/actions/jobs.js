@@ -7,7 +7,7 @@ export const fetchJobs = (position, location) => {
       });
     try {
       let response = await fetch(
-        `/positions.json?description=${position}&location=${location}`
+        `https://jobs.github.com/positions.json?description=${position}&location=${location}`
       );
       if (response.ok) {
         const jobs = await response.json();
