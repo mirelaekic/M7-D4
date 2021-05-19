@@ -47,9 +47,13 @@
     box-shadow: 0 0 0 0.2rem rgb(42 72 105 / 50%) !important;
 }
 body{
+    background-image: url(./jobs.jpg);
     font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 .home-title{
+    color: white;
+    font-weight: 900;
+    font-size: 2.2rem;
     margin-top: 6rem;
     margin-bottom: 7rem;
     text-align: center !important;
@@ -63,4 +67,7 @@ body{
     top: 7%;
     left: 20%;
 
+}
+.bg-dark{
+   background-color: #e75830!important;
 }

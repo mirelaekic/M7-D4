@@ -5,13 +5,16 @@ export const fetchJobs = (position, location) => {
       dispatch({
         type: LOADING_JOBS,
       });
+      //https://cors-anywhere.herokuapp.com/https://jobs.github.com
     try {
+      console.log(position,location,"POSITION AND LOCATION")
       let response = await fetch(
-        `https://cors-anywhere.herokuapp.com/https://jobs.github.com/positions.json?description=${position}&location=${location}`,
-        {mode: 'cors'}
+        `/positions.json?description=${position}&location=${location}`,
       );
+      console.log(response,"the rsponse")
       if (response.ok) {
         const jobs = await response.json();
+        console.log(jobs,"the jobs")
         if(jobs.length === 0) {
             dispatch({
                 type: JOBS_ERROR,

@@ -39,7 +39,7 @@ function MyNav() {
 
   return (
     <div>
-      <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
+      <Navbar className="bg-dark" sticky="top" bg="dark" expand="lg" variant="dark">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Container>
           <Link to="/">

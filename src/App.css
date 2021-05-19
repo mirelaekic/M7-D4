@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+body {
+  background-image: url(./components/jobs.jpg);
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

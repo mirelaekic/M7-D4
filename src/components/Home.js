@@ -51,7 +51,6 @@ export default function OutlinedChips() {
               clickable
               onClick={() => dispatch(fetchJobs(hash,""))}
               color="primary"
-              variant="outlined"
             />
           ))}
         </div>
