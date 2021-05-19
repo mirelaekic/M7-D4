@@ -7,22 +7,22 @@ export const fetchJobs = (position, location) => {
       });
       //https://cors-anywhere.herokuapp.com/https://jobs.github.com
     try {
+      
       console.log(position,location,"POSITION AND LOCATION")
       let response = await fetch(
-        `/positions.json?description=${position}&location=${location}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(`https://jobs.github.com/positions.json?description=${position}&location=${location}`)}`,
       );
-      console.log(response,"the rsponse")
       if (response.ok) {
         const jobs = await response.json();
-        console.log(jobs,"the jobs")
-        if(jobs.length === 0) {
+        let obj = JSON.parse(jobs.contents)
+        if(obj.length === 0) {
             dispatch({
                 type: JOBS_ERROR,
               })
         }
         dispatch({
           type: GET_JOBS,
-          payload: jobs,
+          payload: obj,
         });
       }
     } catch (error) {
