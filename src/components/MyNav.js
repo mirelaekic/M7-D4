@@ -5,7 +5,6 @@ import {
   Nav,
   Form,
   FormControl,
-  Button,
   Row,
   Col,
 } from "react-bootstrap";
@@ -18,9 +17,19 @@ import { fetchJobs } from "../store/actions/jobs";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
-import { CircularProgress, Collapse, IconButton } from "@material-ui/core";
+import { CircularProgress, Collapse, IconButton, Backdrop, Button } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 
 function MyNav() {
+  const classes = useStyles();
+
   const [location, setLocation] = useState("");
   const [position, setPosition] = useState("");
   const [selectJob, setSelectJob] = useState(null);
@@ -30,6 +39,7 @@ function MyNav() {
   const jobs = useSelector((state) => state.jobs.jobs);
   const error = useSelector((state) => state.jobs.error);
   const loading = useSelector((state) => state.jobs.loading);
+
   const selectedJob = (id) => setSelectJob(id);
 
   const getJobs = (event, loc, pos) => {
@@ -39,7 +49,13 @@ function MyNav() {
 
   return (
     <div>
-      <Navbar className="bg-dark" sticky="top" bg="dark" expand="lg" variant="dark">
+      <Navbar
+        className="bg-dark"
+        sticky="top"
+        bg="dark"
+        expand="lg"
+        variant="dark"
+      >
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Container>
           <Link to="/">
@@ -106,18 +122,20 @@ function MyNav() {
       )}
       <Container className="mt-3">
         <Row>
-          {jobs.length > 0 ? (
+          {loading ? (
+           <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+          ) : jobs.length > 0 ? (
             <>
-            {loading ? <CircularProgress /> :
-            <Col lg={4} md={4} sm={4}>
-              <JobPost
-                key={jobs.id}
-                job={jobs}
-                selectedJob={selectJob}
-                jobSelected={selectedJob}
-              />
-            </Col>
-            }
+              <Col className="job-list-col" lg={4} md={4} sm={4}>
+                <JobPost
+                  key={jobs.id}
+                  job={jobs}
+                  selectedJob={selectJob}
+                  jobSelected={selectedJob}
+                />
+              </Col>
             </>
           ) : (
             <Home />

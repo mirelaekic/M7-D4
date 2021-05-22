@@ -22,7 +22,13 @@
     border-radius: 0% !important;
 }
 .job-card:hover{
-    border: 2px rgb(195, 231, 207) solid !important;
+    cursor: pointer;
+    border: 1px rgb(255, 102, 0) solid !important;
+}
+.job-list-col{
+    background-color: #ffffff45;
+    padding: 1rem;
+    border-radius: 8px;
 }
 .card-link{
     color: black !important;
